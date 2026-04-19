@@ -4234,57 +4234,95 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: #0b0b0b;
+        z-index: 999999;
+        display: flex;
+        overflow: hidden;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      .curtain {
+        width: 50%;
+        height: 100%;
+        background: #8b0000;
+        background-image: 
+          linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%),
+          repeating-linear-gradient(90deg, #8b0000 0, #8b0000 20px, #a30000 20px, #a30000 40px);
+        box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+        transition: transform 3s cubic-bezier(0.7, 0, 0.3, 1);
+        pointer-events: auto;
+      }
+      #left-curtain {
+        border-right: 3px solid #ffd700;
+      }
+      #right-curtain {
+        border-left: 3px solid #ffd700;
+      }
+      #entrance-overlay.hidden #left-curtain {
+        transform: translateX(-100%);
+      }
+      #entrance-overlay.hidden #right-curtain {
+        transform: translateX(100%);
+      }
+      #lightButton {
+        position: absolute;
+        top: 0;
+        right: 15%;
+        height: 350px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        z-index: 999999;
-        transition: opacity 2s ease-in-out, visibility 2s;
-      }
-      #entrance-overlay.hidden {
-        opacity: 0;
-        visibility: hidden;
-      }
-      .magic-light {
-        width: 120px;
-        height: 120px;
-        background: radial-gradient(circle, #fff7e6 0%, #ffd966 40%, rgba(255, 217, 102, 0) 70%);
-        border-radius: 50%;
-        box-shadow: 0 0 50px #ffd966, 0 0 100px #ffd966;
         cursor: pointer;
-        animation: pulse 2.5s infinite ease-in-out;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        z-index: 1000001;
+        pointer-events: auto;
+        animation: sway 4s infinite ease-in-out;
+        transform-origin: top;
+        transition: transform 1s ease-in, opacity 0.5s;
+      }
+      .rope {
+        width: 8px;
+        height: 250px;
+        background: repeating-linear-gradient(45deg, #ffd700, #b8860b 10px, #ffd700 20px);
+        border-radius: 4px;
+        box-shadow: 3px 0 10px rgba(0,0,0,0.5);
+      }
+      .tassel {
+        width: 40px;
+        height: 80px;
+        background: #ffd700;
+        background-image: repeating-linear-gradient(90deg, #ffd700 0, #ffd700 4px, #b8860b 4px, #b8860b 6px);
+        border-radius: 0 0 20px 20px;
+        margin-top: -5px;
+        box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
         position: relative;
       }
-      .magic-light::after {
+      .tassel::before {
         content: "";
         position: absolute;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255, 217, 102, 0.2) 0%, transparent 70%);
-        animation: glow-expand 2.5s infinite ease-in-out;
-      }
-      @keyframes pulse {
-        0%, 100% { transform: scale(1); box-shadow: 0 0 50px #ffd966, 0 0 100px rgba(255, 217, 102, 0.5); }
-        50% { transform: scale(1.1); box-shadow: 0 0 80px #ffd966, 0 0 180px #ffd966; }
-      }
-      @keyframes glow-expand {
-        0%, 100% { transform: scale(1); opacity: 0.3; }
-        50% { transform: scale(1.3); opacity: 0.6; }
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 20px;
+        background: #b8860b;
+        border-radius: 50%;
       }
       .entrance-text {
-        color: #ffd966;
-        margin-top: 40px;
+        color: #ffd700;
         font-family: inherit;
-        font-size: 28px;
-        letter-spacing: 4px;
-        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
         text-transform: uppercase;
-        text-shadow: 0 0 10px rgba(255, 217, 102, 0.5);
-        opacity: 0.8;
+        margin-top: 15px;
+        white-space: nowrap;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      }
+      @keyframes sway {
+        0%, 100% { transform: rotate(-3deg); }
+        50% { transform: rotate(3deg); }
+      }
+      #entrance-overlay.hidden #lightButton {
+        transform: translateY(-100%);
+        opacity: 0;
       }
     </style>
     <!-- Start of headEnd -->
@@ -8404,14 +8442,17 @@
       id="svg-templates"
       style="position: absolute;overflow: hidden;bottom: 0;left: 0;width: 0;height: 0;z-index: 0;contain: strict;" aria-hidden="true"></div>
     <div id="entrance-overlay">
-      <div class="magic-light" id="lightButton">
-        <div style="font-size: 50px; filter: drop-shadow(0 0 10px gold);">✨</div>
+      <div id="left-curtain" class="curtain"></div>
+      <div id="right-curtain" class="curtain"></div>
+      <div id="lightButton">
+        <div class="rope"></div>
+        <div class="tassel"></div>
+        <div class="entrance-text">Click to Open</div>
       </div>
-      <div class="entrance-text">Click the light to enter</div>
     </div>
 
     <audio id="bgMusic" loop>
-      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+      <source src="https://www.image2url.com/r2/default/audio/1776614176629-cef85971-29cc-43a3-8613-b1b53493e58b.mp3">
     </audio>
     <script>
       const lightBtn = document.getElementById('lightButton');
@@ -8420,22 +8461,23 @@
 
       let autoScrollInterval;
       
-      lightBtn.addEventListener('click', function() {
+      overlay.addEventListener('click', function() {
         if (audio && audio.paused) {
           audio.play();
         }
         overlay.classList.add('hidden');
+        lightBtn.style.display = 'none'; // Clear the rope immediately
         
         // Start autoscrolling after a short delay for the transition
         setTimeout(() => {
           overlay.style.display = 'none';
           startAutoScroll();
-        }, 2000);
-      });
+        }, 3000);
+      }, { once: true });
 
       function startAutoScroll() {
         const totalHeight = document.body.offsetHeight - window.innerHeight;
-        const totalDuration = 30000; // 10 seconds
+        const totalDuration = 50000; // 10 seconds
         const interval = 10; // 10ms per step
         const totalSteps = totalDuration / interval;
         const speedPerStep = totalHeight / totalSteps;
@@ -8468,7 +8510,7 @@
           'Smt. Parvathi Amma & Shri Sivan': "Vellaigounder's Family",
           'Smt. Shalini & Shri. Ajith Kumar': "Devendiran & Saraswathy",
           'Smt. Janani & Shri. Vijay': 'Moorthy & Vasanthi',
-          'Deepak Kumar': 'Monish 7339158045',
+          'Deepak Kumar': 'Monish',
           'On Thursday, 14th October 2026':'On Friday, 29th May 2026',
           'On Friday, 15th October 2026': 'On Sunday, 31st May 2026',
           'At 09:30am' :'At 02:00 pm',
